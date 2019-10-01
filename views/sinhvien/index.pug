@@ -1,0 +1,23 @@
+extends ../commons/sinhvien.common.pug
+
+block content
+    .container
+        h1.text-center SINH VIEN
+
+        table.table.table-hover.table-bordered
+            thead.text-center
+                tr
+                    th MSSV
+                    th Ten sinh vien
+                    th Phai nu
+                    th Dia chi
+                    th Dien thoai
+                    th Ma khoa
+            each sinhVien in dsSinhVien
+                tr
+                    td= sinhVien.MSSV
+                    td= sinhVien.TEN
+                    td= sinhVien.PHAINU
+                    td= sinhVien.DIACHI
+                    td= sinhVien.DIENTHOAI
+                    td= sinhVien.MAKHOA
