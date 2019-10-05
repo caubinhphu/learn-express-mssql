@@ -1,4 +1,4 @@
-html
+html(lang="vi")
     head
         title= title
         link(rel="stylesheet", href="/styles/bootstrap.min.css")
@@ -6,6 +6,20 @@ html
         script(src="/scripts/popper.min.js")
         script(src="/scripts/bootstrap.min.js")
     body
-        block header
+        #header.bg-primary
+            .d-flex.container
+                a(href="#")
+                    img(src="/images/logo.png", width="150px")
+                div.justify-content-center.d-flex.flex-column
+                    h2 TRƯỜNG ĐẠI HỌC NHA TRANG
+                    h4 HỆ THỐNG TÍCH HỢP TÔNG TIN
+
         block content
-        block footer
+
+        #footer.text-center(style="font-size: 12px")
+            hr
+            span Trường Đại Học Nha Trang (Nha Trang University)
+            br
+            span Số 02 Nguyễn Đình Chiểu - Nha Trang - Khánh Hòa
+            br
+            span Tel : 0583 831 149 Fax: 0583 831 147

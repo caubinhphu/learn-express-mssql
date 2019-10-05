@@ -1,0 +1,24 @@
+extends ../commons/sinhvien.common.pug
+
+block content
+    .m-4.row
+        .col-sm-5
+            .p-4(style="background-color: #e8f4ff")
+                .text-center
+                    b.text-danger ĐĂNG NHẬP
+                    if (errs)
+                        each err in errs
+                            .alert.alert-danger= err
+                form(action="/auth", method="POST")
+                    .form-group
+                        label(for="username") Mã số sinh viên
+                        input#username.form-control(type="text", placeholder="MSSV", name="username", required=true, value=username?username:'')
+                    .form-group
+                        label(for="password") Mật khẩu
+                        input#password.form-control(type="password", placeholder="Mật khẩu", name="password", required=true)
+                    .text-right
+                        button.btn.btn-primary(type="submit") ĐĂNG NHẬP
+        .col-sm-7
+            .p-4(style="background-color: #e8f4ff")
+                .text-center
+                    b.text-danger THÔNG BÁO MỚI NHẤT
