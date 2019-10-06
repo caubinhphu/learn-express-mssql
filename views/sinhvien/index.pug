@@ -1,23 +1,34 @@
 extends ../commons/sinhvien.common.pug
 
 block content
-    .container
+    .m-4
         h1.text-center SINH VIEN
-
-        table.table.table-hover.table-bordered.table-sm
-            thead.text-center
-                tr
-                    th MSSV
-                    th Ten sinh vien
-                    th Phai nu
-                    th Dia chi
-                    th Dien thoai
-                    th Ma khoa
-            each sinhVien in dsSinhVien
-                tr
-                    td= sinhVien.MSSV
-                    td= sinhVien.TEN
-                    td= sinhVien.PHAINU
-                    td= sinhVien.DIACHI
-                    td= sinhVien.DIENTHOAI
-                    td= sinhVien.MAKHOA
+        form(action="/sinhvien", method="POST")
+            table.table.table-hover.table-bordered.table-sm
+                thead.text-center
+                    tr
+                        th STT
+                        th MSSV
+                        th Tên sinh viên
+                        th Ngày sinh
+                        th Giới tính
+                        th Điện thoại
+                        th Mã lớp
+                        th Chọn
+                each sinhVien, index in dsSinhVien
+                    tr
+                        td.text-center= index + 1
+                        td= sinhVien.MSSV
+                        td= sinhVien.HOTEN
+                        td.text-right= sinhVien.NGAYSINH
+                        td.text-center= sinhVien.GT
+                        td= sinhVien.DIENTHOAI
+                        td= sinhVien.MALOP
+                        td.text-center
+                            input(type="radio", name="sv" value=sinhVien.MSSV, required=true)
+            
+            ul.d-flex.flex-wrap.justify-content-between(style="list-style-type: none")
+                li
+                    button.btn.btn-light(type="submit", name="request", value="info") Xem thông tin sinh viên
+                li
+                    button.btn.btn-light(type="submit", name="request", value="result") Xem kết quả học tập sinh viên

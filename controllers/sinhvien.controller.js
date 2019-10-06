@@ -3,18 +3,13 @@ const sql = require('mssql');
 const pool = require('../connectDB');
 
 module.exports.index = async function(req, res, next) {
+    await pool.connect();
     var requests = new sql.Request(pool);
-     await pool.connect();
-    // try {
-    //     //throw new Error('BROKEN');
-    //     await requests.query("INSERT INTO KHOA VALUES('basd', N'Aasdf', 20)");
-    // } catch(err) {
-    //     next(err);
-    // }
-    var result = await requests.query("SELECT * FROM SINHVIEN");
+    var result = await requests.query("SELECT MSSV, HOLOT + ' ' + TEN AS HOTEN, CONVERT(VARCHAR, NGAYSINH, 103) AS NGAYSINH, CASE WHEN GIOITINH = 1 THEN N'Nam' ELSE N'Nữ' END AS GT, DIENTHOAI, MALOP FROM SINHVIEN");
     res.render('sinhvien/index', {
         title: 'Sinh vien',
-        dsSinhVien: result.recordsets[0]
+        dsSinhVien: result.recordset,
+        user: req.app.locals.user
     });
     
     pool.close();
@@ -54,4 +49,38 @@ module.exports.filter = async function(req, res, next) {
         next(err);
     }
     pool.close();
-}
+};
+
+module.exports.postSinhVien = function(req, res, next) {
+    var requests = req.body;
+    res.redirect(`/sinhvien/${requests.request}/${requests.sv}`);
+};
+
+module.exports.infoSinhVien = async function(req, res, next) {
+    // res.send(req.params.id);
+    await pool.connect();
+    var requset = new sql.Request(pool);
+    requset.input('mssv', sql.VarChar, req.params.id);
+    try {
+        var result = await requset.query("SELECT MSSV, HOLOT + ' ' + TEN AS HOTEN,\
+            CASE WHEN GIOITINH = 1 THEN N'Nam' ELSE N'Nữ' END AS GT,\
+            CONVERT(VARCHAR, NGAYSINH, 103) as NGAYSINH, SV.MALOP, CMND, QUEQUAN, NOICUTRU,\
+            DIENTHOAI, TENNGANH, TENKHOA\
+            FROM SINHVIEN SV INNER JOIN LOP LO ON SV.MALOP = LO.MALOP\
+	        INNER JOIN NGANH NG ON LO.MANGANH = NG.MANGANH\
+	        INNER JOIN KHOA KH ON NG.MAKHOA = KH.MAKHOA\
+            WHERE MSSV = @mssv");
+    } catch(err) {
+        next(err);
+    }
+    //console.log(result);
+    res.render('sinhvien/info', {
+        title: 'Thông tin sinh viên',
+        sinhVien: result.recordset[0],
+        user: req.app.locals.user
+    })
+};
+
+module.exports.resultSinhVien = function(req, res, next) {
+    // res.send(req.params.id);
+};

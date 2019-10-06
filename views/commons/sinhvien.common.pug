@@ -13,7 +13,10 @@ html(lang="vi")
                 div.justify-content-center.d-flex.flex-column
                     h2 TRƯỜNG ĐẠI HỌC NHA TRANG
                     h4 HỆ THỐNG TÍCH HỢP TÔNG TIN
-
+        if user
+            .d-flex.justify-content-end.align-items-center.bg-light
+                b.mr-2= user
+                a.btn.btn-outline-secondary(href='/auth/logout') Log out
         block content
 
         #footer.text-center(style="font-size: 12px")
