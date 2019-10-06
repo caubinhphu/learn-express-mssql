@@ -51,9 +51,9 @@ module.exports.filter = async function(req, res, next) {
     pool.close();
 };
 
-module.exports.postSinhVien = function(req, res, next) {
-    var requests = req.body;
-    res.redirect(`/sinhvien/${requests.request}/${requests.sv}`);
+module.exports.getInfo = function(req, res, next) {
+    var query = req.query;
+    res.redirect(`/sinhvien/${query.request}/${query.sv}`);
 };
 
 module.exports.infoSinhVien = async function(req, res, next) {
@@ -78,9 +78,37 @@ module.exports.infoSinhVien = async function(req, res, next) {
         title: 'Thông tin sinh viên',
         sinhVien: result.recordset[0],
         user: req.app.locals.user
-    })
+    });
+    pool.close();
 };
 
 module.exports.resultSinhVien = function(req, res, next) {
     // res.send(req.params.id);
+};
+
+module.exports.search = async function(req, res, next) {
+    var query = req.query;
+    await pool.connect();
+    var request = new sql.Request(pool);
+    request.input('key', sql.VarChar, query.searchBy);
+    request.input('value', sql.VarChar, query.value);
+    try {
+        var result = await request.query(`SELECT MSSV, HOLOT + ' ' + TEN AS HOTEN,\
+        CASE WHEN GIOITINH = 1 THEN N'Nam' ELSE N'Nữ' END AS GT,\
+        CONVERT(VARCHAR, NGAYSINH, 103) as NGAYSINH, SV.MALOP, CMND, QUEQUAN, NOICUTRU,\
+        DIENTHOAI, TENNGANH, TENKHOA\
+        FROM SINHVIEN SV INNER JOIN LOP LO ON SV.MALOP = LO.MALOP\
+        INNER JOIN NGANH NG ON LO.MANGANH = NG.MANGANH\
+        INNER JOIN KHOA KH ON NG.MAKHOA = KH.MAKHOA\
+        WHERE ${query.searchBy} = ${query.value}`)
+    } catch(err) {
+        next(err);
+    }
+    res.render('sinhvien/index', {
+        title: 'Sinh viên',
+        dsSinhVien: result.recordset,
+        user: req.app.locals.user,
+        query: query
+    })
+    pool.close();
 };

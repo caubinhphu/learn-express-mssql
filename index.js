@@ -25,7 +25,11 @@ app.set('view engine', 'pug');
 app.use(express.static('publics'));
 
 app.get('/', function(req, res) {
-    res.redirect('/sinhvien');
+    // res.redirect('/sinhvien');
+    res.render('index', {
+        title: 'Trang quản lý sinh viên',
+        user: app.locals.user
+    })
 });
 
 app.use('/auth', authRoute);

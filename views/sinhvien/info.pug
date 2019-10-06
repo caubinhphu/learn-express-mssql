@@ -4,16 +4,19 @@ block content
     h2.text-center Lý lịch sinh viên
 
     .m-4.row
-        .col-md-6
+        .col-sm-2
+            img(src=sinhVien.avatar, alt="Avatar", width="100px")
+        .col-md-5
             p= `Mã số sinh viên: ${sinhVien.MSSV}`
             p= `Giới tính: ${sinhVien.GT}`
             p= `Mã lớp: ${sinhVien.MALOP}`
             p= `Số CMND: ${sinhVien.CMND}`
             p= `Quê quán: ${sinhVien.QUEQUAN}`
-            p= `Điện thoại sinh viên: ${sinhVien.DIENTHOAI}`
-        .col-md-6
+        .col-md-5
             p= `Họ và tên sinh viên: ${sinhVien.HOTEN}`
             p= `Ngày sinh: ${sinhVien.NGAYSINH}`
             p= `Tên đơn vị (khoa/viện): ${sinhVien.TENKHOA}`
             p= `Tên ngành học: ${sinhVien.TENNGANH}`
             p= `Nơi ở hiện tại: ${sinhVien.NOICUTRU}`
+            p= `Điện thoại sinh viên: ${sinhVien.DIENTHOAI}`
+        a.btn.btn-secondary(href="/sinhvien") Back
