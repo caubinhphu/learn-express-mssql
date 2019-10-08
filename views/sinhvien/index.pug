@@ -4,18 +4,20 @@ block content
     .m-4
         h1.text-center SINH VIÊN
 
-        form.m-2.bordered.col-md-6.mx-auto(action="/sinhvien/search", method="GET")
+        form.m-2.bordered.col-md-9.mx-auto(action="/sinhvien/search", method="GET")
             .d-flex
                 select.form-control(name="searchBy")
                     option(value="MSSV") Tìm theo MSSV
                     option(value="CMND", selected=query?query.searchBy==='CMND'?true:false:false) Tìm theo số CMND
                     option(value="TEN", selected=query?query.searchBy==='TEN'?true:false:false) Tìm theo họ tên sinh viên
-                    option(value="QUEQUAN", selected=query?query.searchBy==='QUEQUAN'?true:false:false) Tìm theo đại chỉ
+                    option(value="QUEQUAN", selected=query?query.searchBy==='QUEQUAN'?true:false:false) Tìm theo quê quán
                     option(value="NOICUTRU", selected=query?query.searchBy==='NOICUTRU'?true:false:false) Tìm theo chổ ở hiện tại
-                    option(value="TENKHOA", selected=query?query.searchBy==='TENKHOA'?true:false:false) Tìm theo khoa
-                    option(value="TENNGANH", selected=query?query.searchBy==='TENNGANH'?true:false:false) Tìm theo ngành học
+                    option(value="MAKHOA", selected=query?query.searchBy==='MAKHOA'?true:false:false) Tìm theo mã khoa
+                    option(value="TENKHOA", selected=query?query.searchBy==='TENKHOA'?true:false:false) Tìm theo tên khoa
+                    option(value="MANGANH", selected=query?query.searchBy==='MANGANH'?true:false:false) Tìm theo mã ngành học
+                    option(value="TENNGANH", selected=query?query.searchBy==='TENNGANH'?true:false:false) Tìm theo tên ngành học
                     option(value="MALOP", selected=query?query.searchBy==='MALOP'?true:false:false) Tìm theo lớp
-                    option(value="GIOTINH", selected=query?query.searchBy==='GIOTINH'?true:false:false) Tìm theo giới tính
+                    option(value="GIOITINH", selected=query?query.searchBy==='GIOITINH'?true:false:false) Tìm theo giới tính
                 input.form-control(type="text", name="value" value=query?query.value:'')
             .text-right.mt-2
                 button.btn.btn-success(type="submit") Tìm kiếm

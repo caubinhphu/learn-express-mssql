@@ -86,22 +86,33 @@ module.exports.resultSinhVien = function(req, res, next) {
     // res.send(req.params.id);
 };
 
+function checkGT(gt) {
+    if (gt.toLowerCase().localeCompare('nam', 'en', {sensitivity: 'base'}) === 0)
+        return 1;
+    else if (gt.localeCompare('nu', 'en', { sensitivity: 'base' }) === 0)
+        return 0;
+    return '';
+}
+
 module.exports.search = async function(req, res, next) {
     var query = req.query;
+    if (query.searchBy === 'GIOITINH') {
+        query.value = checkGT(query.value);
+    }
+
     await pool.connect();
     var request = new sql.Request(pool);
-    request.input('key', sql.VarChar, query.searchBy);
-    request.input('value', sql.VarChar, query.value);
     try {
-        var result = await request.query(`SELECT MSSV, HOLOT + ' ' + TEN AS HOTEN,\
-        CASE WHEN GIOITINH = 1 THEN N'Nam' ELSE N'Nữ' END AS GT,\
-        CONVERT(VARCHAR, NGAYSINH, 103) as NGAYSINH, SV.MALOP, CMND, QUEQUAN, NOICUTRU,\
-        DIENTHOAI, TENNGANH, TENKHOA\
-        FROM SINHVIEN SV INNER JOIN LOP LO ON SV.MALOP = LO.MALOP\
-        INNER JOIN NGANH NG ON LO.MANGANH = NG.MANGANH\
-        INNER JOIN KHOA KH ON NG.MAKHOA = KH.MAKHOA\
-        WHERE ${query.searchBy} = ${query.value}`)
+        var result;
+        if (query.value === '') {
+            result = await request.query('EXECUTE TIMKIEM_SINHVIEN_2');
+        } else if (query.searchBy === 'GIOITINH') {
+            result = await request.query(`EXECUTE TIMKIEM_SINHVIEN_2 @${query.searchBy} = ${query.value}`);
+        } else {
+            result = await request.query(`EXECUTE TIMKIEM_SINHVIEN_2 @${query.searchBy} = N'${query.value}'`);
+        }
     } catch(err) {
+        pool.close();
         next(err);
     }
     res.render('sinhvien/index', {
