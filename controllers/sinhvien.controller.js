@@ -15,49 +15,12 @@ module.exports.index = async function(req, res, next) {
     pool.close();
 };
 
-module.exports.perparedStatement = async function(req, res, next) {
-    await pool.connect();
-    var ps = new sql.PreparedStatement(pool);
-    ps.input('param', sql.Int);
-    try{
-        await ps.prepare('select @param as value');
-        var result = [];
-        for (let i = 0; i <=10; i++)
-        {
-            let data = await ps.execute({param: i});
-            result.push(data.recordset[0]);
-        }
-        res.send(result);
-        await ps.unprepare();
-    } catch(err) {
-        next(err);
-    }
-    pool.close();
-};
-
-module.exports.filter = async function(req, res, next) {
-    await pool.connect();
-    var requset = new sql.Request(pool);
-    requset.input('GT', sql.Bit, 0);
-    try {
-        var result = await requset.execute("SELECT_SINHVIEN_GT");
-        res.render('sinhvien/index', {
-            title: 'Sinh vien',
-            dsSinhVien: result.recordsets[0]
-        });
-    } catch(err) {
-        next(err);
-    }
-    pool.close();
-};
-
 module.exports.getInfo = function(req, res, next) {
     var query = req.query;
     res.redirect(`/sinhvien/${query.request}/${query.sv}`);
 };
 
 module.exports.infoSinhVien = async function(req, res, next) {
-    // res.send(req.params.id);
     await pool.connect();
     var requset = new sql.Request(pool);
     requset.input('mssv', sql.VarChar, req.params.id);
@@ -73,13 +36,12 @@ module.exports.infoSinhVien = async function(req, res, next) {
     } catch(err) {
         next(err);
     }
-    //console.log(result);
     res.render('sinhvien/info', {
         title: 'Thông tin sinh viên',
         sinhVien: result.recordset[0],
         user: req.app.locals.user
     });
-    pool.close();
+    pool.close(); // important
 };
 
 module.exports.resultSinhVien = function(req, res, next) {
@@ -120,6 +82,48 @@ module.exports.search = async function(req, res, next) {
         dsSinhVien: result.recordset,
         user: req.app.locals.user,
         query: query
-    })
+    });
+    pool.close();
+};
+
+module.exports.bancansulopIndex = async function(req, res, next) {
+    await pool.connect();
+    var request = new sql.Request(pool);
+    try {
+        var result = await request.query("SELECT LOP.MALOP, LOPTRUONG, HOLOT + ' ' + TEN AS HOTEN, DIENTHOAI, NOICUTRU\
+        FROM LOP LEFT JOIN SINHVIEN ON LOPTRUONG = MSSV")
+    } catch (err) {
+        pool.close();
+        next(err);
+    }
+    res.render('sinhvien/bancansulop/index', {
+        title: 'Ban cán sự lớp',
+        dsBCS: result.recordset,
+        userName: req.app.locals.user
+    });
+    pool.close();
+};
+
+module.exports.bancansulopSearch = async function(req, res, next) {
+    var query = req.query;
+    await pool.connect();
+    var requset = new sql.Request(pool);
+    var result;
+    try {
+        if (query.value === '') {
+            result = await requset.query(`EXECUTE TIMKIEM_BANCANSULOP`);
+        } else {
+            result = await requset.query(`EXECUTE TIMKIEM_BANCANSULOP @${query.searchBy} = N'${query.value}'`);
+        }
+    } catch(err) {
+        pool.close();
+        next(err);
+    }
+    res.render('sinhvien/bancansulop/index', {
+        title: 'Ban cán sự lớp',
+        dsBCS: result.recordset,
+        userName: req.app.locals.user,
+        query: query
+    });
     pool.close();
 };

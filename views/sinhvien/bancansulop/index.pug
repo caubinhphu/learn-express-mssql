@@ -1,0 +1,40 @@
+extends ../../commons/sinhvien.common.pug
+
+block content
+    h2.text-center.my-4 DANH SÁCH BAN CÁN SỰ LỚP
+
+    form.m-2.bordered.col-md-9.mx-auto(action="/sinhvien/bancansulop/search", method="GET")
+        .d-flex
+            select.form-control(name="searchBy")
+                option(value="MSSV") Tìm theo MSSV
+                option(value="TEN", selected=query?query.searchBy==='TEN'?true:false:false) Tìm theo họ tên sinh viên
+                option(value="NOICUTRU", selected=query?query.searchBy==='NOICUTRU'?true:false:false) Tìm theo chổ ở hiện tại
+                option(value="MAKHOA", selected=query?query.searchBy==='MAKHOA'?true:false:false) Tìm theo mã khoa
+                option(value="TENKHOA", selected=query?query.searchBy==='TENKHOA'?true:false:false) Tìm theo tên khoa
+                option(value="MANGANH", selected=query?query.searchBy==='MANGANH'?true:false:false) Tìm theo mã ngành học
+                option(value="TENNGANH", selected=query?query.searchBy==='TENNGANH'?true:false:false) Tìm theo tên ngành học
+                option(value="MALOP", selected=query?query.searchBy==='MALOP'?true:false:false) Tìm theo lớp
+            input.form-control(type="text", name="value" value=query?query.value:'')
+        .text-right.mt-2
+            button.btn.btn-success(type="submit") Tìm kiếm
+
+    .m-4
+        table.table.table-sm.table-hover.table-bordered
+            thead.bg-info
+                tr.text-center
+                    th Lớp
+                    th MSSV
+                    th Họ tên lớp trưởng
+                    th Điện thoại
+                    th Nơi cư trú
+                    th Chọn
+            tbody.text-right
+                each bcs in dsBCS
+                    tr
+                        td= bcs.MALOP
+                        td= bcs.LOPTRUONG
+                        td= bcs.HOTEN
+                        td= bcs.DIENTHOAI
+                        td= bcs.NOICUTRU
+                        td.text-center
+                            input#chonSV(type="radio", required=true, name="sv")
