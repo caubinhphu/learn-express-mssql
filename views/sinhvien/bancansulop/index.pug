@@ -17,7 +17,8 @@ block content
             input.form-control(type="text", name="value" value=query?query.value:'')
         .text-right.mt-2
             button.btn.btn-success(type="submit") Tìm kiếm
-
+    .m-4
+        a.btn.btn-secondary(href="/") Back
     .m-4
         table.table.table-sm.table-hover.table-bordered
             thead.bg-info
@@ -37,4 +38,7 @@ block content
                         td= bcs.DIENTHOAI
                         td= bcs.NOICUTRU
                         td.text-center
-                            input#chonSV(type="radio", required=true, name="sv")
+                            input(type="radio", required=true, name="sv")
+            
+    .m-4
+        a.btn.btn-secondary(href="/") Back

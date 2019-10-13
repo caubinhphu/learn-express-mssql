@@ -1,6 +1,9 @@
 const sql = require('mssql');
+const fs = require('fs');
 
 const pool = require('../connectDB');
+
+const avatarDefault = '/images/avatar.png';
 
 module.exports.index = async function(req, res, next) {
     await pool.connect();
@@ -28,7 +31,7 @@ module.exports.infoSinhVien = async function(req, res, next) {
         var result = await requset.query("SELECT MSSV, HOLOT + ' ' + TEN AS HOTEN,\
             CASE WHEN GIOITINH = 1 THEN N'Nam' ELSE N'Nữ' END AS GT,\
             CONVERT(VARCHAR, NGAYSINH, 103) as NGAYSINH, SV.MALOP, CMND, QUEQUAN, NOICUTRU,\
-            DIENTHOAI, TENNGANH, TENKHOA\
+            DIENTHOAI, TENNGANH, TENKHOA, AVATAR\
             FROM SINHVIEN SV INNER JOIN LOP LO ON SV.MALOP = LO.MALOP\
 	        INNER JOIN NGANH NG ON LO.MANGANH = NG.MANGANH\
 	        INNER JOIN KHOA KH ON NG.MAKHOA = KH.MAKHOA\
@@ -125,5 +128,31 @@ module.exports.bancansulopSearch = async function(req, res, next) {
         userName: req.app.locals.user,
         query: query
     });
+    pool.close();
+};
+
+module.exports.postEdit = async function(req, res, next) {
+    await pool.connect();
+    var sv = req.params.sv;
+    var requset = new sql.Request(pool);
+    var result;
+
+    try {
+        if (!req.file) {
+            result = await requset.query(`UPDATE SINHVIEN SET NOICUTRU = N'${req.body.cutru}', \
+                DIENTHOAI = '${req.body.dienthoai}' WHERE MSSV = '${sv}'`);
+        } else {
+            var sinhvien = await requset.query(`SELECT AVATAR FROM SINHVIEN WHERE MSSV = '${sv}'`);
+            if (sinhvien.recordset[0].AVATAR !== avatarDefault) {
+                fs.unlink(`./publics${sinhvien.recordset[0].AVATAR}`, (err) => { if (err) throw err });
+            }
+            result = await requset.query(`UPDATE SINHVIEN SET NOICUTRU = N'${req.body.cutru}', \
+                DIENTHOAI = '${req.body.dienthoai}', AVATAR = '/uploads/${req.file.filename}' WHERE MSSV = '${sv}'`)
+        }
+    } catch(err) {
+        pool.close();
+        next(err);
+    }
+    res.redirect(`/sinhvien/info/${sv}`);
     pool.close();
 };

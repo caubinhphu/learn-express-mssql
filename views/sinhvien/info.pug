@@ -3,9 +3,10 @@ extends ../commons/sinhvien.common.pug
 block content
     h2.text-center Lý lịch sinh viên
 
-    .m-4.row
+    form(action=`/sinhvien/edit/${sinhVien.MSSV}`, method="POST", enctype="multipart/form-data").m-4.row
         .col-sm-2
-            img(src=sinhVien.avatar, alt="Avatar", width="100px")
+            img(src=sinhVien.AVATAR, alt="Avatar", width="100px")
+            input.mt-2.form-control-file(type="file", name="avatar", accept=".jpg, .png")
         .col-md-5
             p= `Mã số sinh viên: ${sinhVien.MSSV}`
             p= `Giới tính: ${sinhVien.GT}`
@@ -17,6 +18,13 @@ block content
             p= `Ngày sinh: ${sinhVien.NGAYSINH}`
             p= `Tên đơn vị (khoa/viện): ${sinhVien.TENKHOA}`
             p= `Tên ngành học: ${sinhVien.TENNGANH}`
-            p= `Nơi ở hiện tại: ${sinhVien.NOICUTRU}`
-            p= `Điện thoại sinh viên: ${sinhVien.DIENTHOAI}`
+            .d-flex
+                label(for="noi-cutru") Nơi ở hiện tại: 
+                input#noi-cutru.form-control.w-50.flex-grow-1.ml-2(type="text", name="cutru", value=sinhVien.NOICUTRU)
+            .d-flex.mt-2
+                label(for="dienthoai") Điện thoại sinh viên: 
+                input#dienthoai.form-control.w-50.flex-grow-1.ml-2(type="text", name="dienthoai", value=sinhVien.DIENTHOAI)
+        div.col-12.text-right.m-4
+            button.btn.btn-primary(type="submit") Lưu thông tin thay đổi
+    .m-4
         a.btn.btn-secondary(href="/sinhvien") Back

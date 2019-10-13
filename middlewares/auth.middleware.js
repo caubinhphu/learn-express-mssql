@@ -8,5 +8,7 @@ module.exports.postAdmin = function(req, res, next) {
         res.redirect('/auth');
         return;
     }
+    
+    req.app.locals.user = 'Admin';
     next();
 }

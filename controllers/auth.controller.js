@@ -19,7 +19,6 @@ module.exports.postAuth = async function(req, res, next) {
         //login
         console.log('ok');
         res.cookie('userName', process.env.ADMIN, { signed: true });
-        req.app.locals.user = 'Admin';
         res.redirect('/sinhvien');
     } else {
         //no login
