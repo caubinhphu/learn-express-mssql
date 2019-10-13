@@ -22,7 +22,18 @@ router.get('/addOne', controller.addIndex);
 
 router.post('/addOne', upload.single('avatar'), controller.postAddOne);
 
+router.get('/err', function(req, res, next) {
+    try {
+        var err = new Error('Loi roi ban oi!');
+        throw err;
+        res.send('qua loi');
+    } catch(err) {
+        next(err);
+    }
+});
+
 router.get('/info/:id', controller.infoSinhVien);
+
 
 router.get('/result/:id', controller.resultSinhVien);
 

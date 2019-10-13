@@ -35,4 +35,10 @@ app.get('/', function(req, res) {
 app.use('/auth', authRoute);
 app.use('/sinhvien', authMiddleWare.postAdmin, sinhvienRoute);
 
+function handleErr(err, req, res, next) {
+    console.log(err);
+    res.send(err.message);
+}
+app.use(handleErr);
+
 app.listen(port, () => console.log('Server is running'));
