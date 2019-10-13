@@ -18,6 +18,10 @@ router.get('/bancansulop/search', controller.bancansulopSearch)
 
 router.post('/edit/:sv', upload.single('avatar'), controller.postEdit);
 
+router.get('/addOne', controller.addIndex);
+
+router.post('/addOne', upload.single('avatar'), controller.postAddOne);
+
 router.get('/info/:id', controller.infoSinhVien);
 
 router.get('/result/:id', controller.resultSinhVien);

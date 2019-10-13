@@ -156,3 +156,34 @@ module.exports.postEdit = async function(req, res, next) {
     res.redirect(`/sinhvien/info/${sv}`);
     pool.close();
 };
+
+module.exports.addIndex = function(req, res, next) {
+    res.render('sinhvien/create', {
+        title: 'Thêm sinh viên'
+    });
+};
+
+module.exports.postAddOne = async function(req, res, next) {
+    var data = req.body;
+    if (!req.file) {
+        data.avatar = avatarDefault;
+    } else {
+        data.avatar = `/uploads/${req.file.filename}`;
+    }
+    data.gioitinh = checkGT(data.gioitinh);
+    await pool.connect();
+    var request = new sql.Request(pool);
+    try {
+        var result = await request.query(`INSERT INTO SINHVIEN \
+            VALUES ('${data.mssv}', N'${data.holot}', N'${data.ten}', '${data.ngaysinh}', '${data.cmnd}', \
+                    N'${data.quequan}', N'${data.noicutru}', '${data.dienthoai}', '${data.lop}', \
+                    ${data.gioitinh}, '${data.avatar}')`);
+        res.redirect('/sinhvien');
+        pool.close();
+    } catch(err) {
+        pool.close();
+        next(err);
+    }
+};
+
+
