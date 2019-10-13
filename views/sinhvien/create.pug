@@ -9,40 +9,48 @@ block content
         .form-group.col-md-6
             label(for="mssv") Mã số sinh viên
                 span.text-danger *
-            input#mssv.form-control(type="text", name="mssv", required=true, value=value?value.mssv:'')
+                em.err
+            input#mssv.form-control.field(type="text", name="mssv", required=true, value=value?value.mssv:'')
         .form-group.col-md-6
             label(for="holot") Họ và tên lót
                 span.text-danger *
-            input#holot.form-control(type="text", name="holot", required=true, value=value?value.holot:'')
+                em.err
+            input#holot.form-control.field(type="text", name="holot", required=true, value=value?value.holot:'')
         .form-group.col-md-6
             label(for="ten") Tên
                 span.text-danger *
-            input#ten.form-control(type="text", name="ten", required=true, value=value?value.ten:'')
+                em.err
+            input#ten.form-control.field(type="text", name="ten", required=true, value=value?value.ten:'')
         .form-group.col-md-6
             label(for="cmnd") Số CMND
                 span.text-danger *
-            input#cmnd.form-control(type="text", name="cmnd", required=true, value=value?value.cmnd:'')
+                em.err
+            input#cmnd.form-control.field(type="text", name="cmnd", required=true, value=value?value.cmnd:'')
         .form-group.col-md-6
             label(for="ngaysinh") Ngày sinh
                 span.text-danger *
-            input#ngaysinh.form-control(type="date", name="ngaysinh", required=true, value=value?value.ngaysinh:'')
+                em.err
+            input#ngaysinh.form-control.field(type="date", name="ngaysinh", required=true, value=value?value.ngaysinh:'')
         .form-group.col-md-6
             label(for="gioitinh") Giới tính
                 span.text-danger *
-            select#gioitinh.form-control(name="gioitinh")
+                em.err
+            select#gioitinh.form-control.field(name="gioitinh")
                 option(value="nam") Nam
                 option(value="nu") Nữ
         .form-group.col-md-6
             label(for="quequan") Quê quán
                 span.text-danger *
-            input#quequan.form-control(type="text", name="quequan", required=true, value=value?value.quequan:'')
+                em.err
+            input#quequan.form-control.field(type="text", name="quequan", required=true, value=value?value.quequan:'')
         .form-group.col-md-6
             label(for="noicutru") Nơi cư trú hiện tại
             input#noicutru.form-control(type="text", name="noicutru", value=value?value.noicutru:'')
         .form-group.col-md-6
             label(for="lop") Lớp
                 span.text-danger *
-            input#lop.form-control(type="text", name="lop", required=true, value=value?value.lop:'')
+                em.err
+            input#lop.form-control.field(type="text", name="lop", required=true, value=value?value.lop:'')
         .form-group.col-md-6
             label(for="dienthoai") Điện thoại
             input#dienthoai.form-control(type="text", name="dienthoai", value=value?value.dienthoai:'')
@@ -55,5 +63,6 @@ block content
             span ) Bắt buộc nhập
 
         .text-right.col-12
-            button.btn.btn-primary(type="submit") Thêm sinh viên
+            button#btn-submit.btn.btn-primary(type="button") Thêm sinh viên
     a.btn.btn-secondary.ml-4(href="/") Back
+    script(src="/scripts/validateAddStudent.js")
