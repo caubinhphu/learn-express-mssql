@@ -6,9 +6,11 @@ const ngaysinh = document.getElementById('ngaysinh');
 const gioitinh = document.getElementById('gioitinh');
 const quequan = document.getElementById('quequan');
 const lop = document.getElementById('lop');
+const cutru = document.getElementById('noicutru');
+const dienthoai = document.getElementById('dienthoai');
 const btnSubmit = document.getElementById('btn-submit');
 
-const arrayField = [mssv, holot, ten, cmnd, ngaysinh, gioitinh, quequan, lop];
+const arrayField = [mssv, holot, ten, cmnd, ngaysinh, gioitinh, quequan, cutru, lop, dienthoai];
 
 const arrayInput = document.getElementsByClassName('field');
 const emErr = document.getElementsByClassName('err');
@@ -16,10 +18,17 @@ const emErr = document.getElementsByClassName('err');
 var ok = true;
 
 function checkErr() {
-    var err = arrayField.map(function(filed) {
+    var err = arrayField.map(function(filed, index) {
         if (filed.value === '') {
+            if (index === 7 || index === 9) {
+                return ''
+            } else {
+                ok = false;
+                return 'Chưa nhập thông tin';
+            }
+        } else if (filed.value.match(/[<>!@#$%^&*<>()?+]/gim)) {
             ok = false;
-            return 'Chưa nhập thông tin';
+            return 'Có kí tự không hợp lệ';
         } else {
             return '';
         }
@@ -28,7 +37,10 @@ function checkErr() {
         emErr[i].innerHTML = err[i];
         if (err[i] !== '') {
             arrayInput[i].style.borderColor = 'red';
+        } else {
+            arrayInput[i].style.borderColor = '#ced4da';
         }
+
     }
 }
 

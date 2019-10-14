@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 
 const controller = require('../controllers/sinhvien.controller');
+const addStudentMiddleware = require('../middlewares/addStudent.middleware');
+
 const upload = multer( {dest: './publics/uploads'} );
 
 const router = express.Router();
@@ -20,7 +22,7 @@ router.post('/edit/:sv', upload.single('avatar'), controller.postEdit);
 
 router.get('/addOne', controller.addIndex);
 
-router.post('/addOne', upload.single('avatar'), controller.postAddOne);
+router.post('/addOne', upload.single('avatar'), addStudentMiddleware.postAddStudent, controller.postAddOne);
 
 router.get('/err', function(req, res, next) {
     try {

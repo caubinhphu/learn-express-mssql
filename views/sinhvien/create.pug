@@ -9,51 +9,53 @@ block content
         .form-group.col-md-6
             label(for="mssv") Mã số sinh viên
                 span.text-danger *
-                em.err
-            input#mssv.form-control.field(type="text", name="mssv", required=true, value=value?value.mssv:'')
+                em.err= errors ? errors[0] : ''
+            input#mssv.form-control.field(type="text", name="mssv", required=true, value=values?values.mssv:'')
         .form-group.col-md-6
             label(for="holot") Họ và tên lót
                 span.text-danger *
-                em.err
-            input#holot.form-control.field(type="text", name="holot", required=true, value=value?value.holot:'')
+                em.err= errors ? errors[1] : ''
+            input#holot.form-control.field(type="text", name="holot", required=true, value=values?values.holot:'')
         .form-group.col-md-6
             label(for="ten") Tên
                 span.text-danger *
-                em.err
-            input#ten.form-control.field(type="text", name="ten", required=true, value=value?value.ten:'')
+                em.err= errors ? errors[2] : ''
+            input#ten.form-control.field(type="text", name="ten", required=true, value=values?values.ten:'')
         .form-group.col-md-6
             label(for="cmnd") Số CMND
                 span.text-danger *
-                em.err
-            input#cmnd.form-control.field(type="text", name="cmnd", required=true, value=value?value.cmnd:'')
+                em.err= errors ? errors[3] : ''
+            input#cmnd.form-control.field(type="text", name="cmnd", required=true, value=values?values.cmnd:'')
         .form-group.col-md-6
             label(for="ngaysinh") Ngày sinh
                 span.text-danger *
-                em.err
-            input#ngaysinh.form-control.field(type="date", name="ngaysinh", required=true, value=value?value.ngaysinh:'')
+                em.err= errors ? errors[4] : ''
+            input#ngaysinh.form-control.field(type="date", name="ngaysinh", required=true, value=values?values.ngaysinh:'')
         .form-group.col-md-6
             label(for="gioitinh") Giới tính
                 span.text-danger *
-                em.err
+                em.err= errors ? errors[5] : ''
             select#gioitinh.form-control.field(name="gioitinh")
                 option(value="nam") Nam
                 option(value="nu") Nữ
         .form-group.col-md-6
             label(for="quequan") Quê quán
                 span.text-danger *
-                em.err
-            input#quequan.form-control.field(type="text", name="quequan", required=true, value=value?value.quequan:'')
+                em.err= errors ? errors[6] : ''
+            input#quequan.form-control.field(type="text", name="quequan", required=true, value=values?values.quequan:'')
         .form-group.col-md-6
             label(for="noicutru") Nơi cư trú hiện tại
-            input#noicutru.form-control(type="text", name="noicutru", value=value?value.noicutru:'')
+                em.err= errors ? errors[7] === 'Có kí tự không hợp lệ' ? errors[7] : '' : ''
+            input#noicutru.form-control.field(type="text", name="noicutru", value=values?values.noicutru:'')
         .form-group.col-md-6
             label(for="lop") Lớp
                 span.text-danger *
-                em.err
-            input#lop.form-control.field(type="text", name="lop", required=true, value=value?value.lop:'')
+                em.err= errors ? errors[8] : ''
+            input#lop.form-control.field(type="text", name="lop", required=true, value=values?values.lop:'')
         .form-group.col-md-6
             label(for="dienthoai") Điện thoại
-            input#dienthoai.form-control(type="text", name="dienthoai", value=value?value.dienthoai:'')
+                em.err= errors ? errors[9] === 'Có kí tự không hợp lệ' ? errors[9] : '' : ''
+            input#dienthoai.form-control.field(type="text", name="dienthoai", value=values?values.dienthoai:'')
         .form-group.col-12
             label(for="avatar") Avata
             input#avatar.form-control-file(type="file", name="avatar")
