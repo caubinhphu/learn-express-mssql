@@ -186,4 +186,47 @@ module.exports.postAddOne = async function(req, res, next) {
     }
 };
 
+module.exports.addIndexJson = function(req, res, next) {
+    res.render('sinhvien/createJson', {
+        title: 'Thêm sinh viên'
+    });
+};
 
+function readFile (path) {
+    return new Promise(function(resolve, reject) {
+        fs.readFile(path, {encoding: 'utf8'}, function(err, data) {
+            if (err)
+                reject(err);
+            else resolve(JSON.parse(data));
+        });
+    });
+}
+
+module.exports.postAddJson = async function(req, res, next) {
+    await pool.connect();
+    let request = new sql.Request(pool);
+    try {
+        let data = await readFile(`./${req.file.path}`);
+
+        // Tạo chuỗi truy vấn
+        let str = 'INSERT INTO SINHVIEN VALUES ';
+        let valueArray = data.map(function(sv) {
+            return `('${sv.MSSV}', N'${sv.HOLOT}', N'${sv.TEN}', '${sv.NGAYSINH}', '${sv.CMND}', \
+            N'${sv.QUEQUAN}', N'${sv.NOICUTRU}', '${sv.DIENTHOAI}', '${sv.LOP}', \
+            ${sv.GIOITINH}, '${avatarDefault}'),`
+        });
+        let valueStr = valueArray.join(' ');
+        str += valueStr.slice(0, -1);
+
+        let result = await request.query(str);
+        // fs.unlink(`./${req.file.path}`, (err) => { if (err) throw err;});
+        res.redirect('/sinhvien');
+        pool.close();
+    } catch(err) {
+        // fs.unlink(`./${req.file.path}`, (err) => { if (err) throw err;});
+        pool.close();
+        next(err);
+    } finally {
+        fs.unlink(`./${req.file.path}`, (err) => { if (err) throw err;});
+    }
+};

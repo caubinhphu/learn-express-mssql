@@ -22,7 +22,11 @@ router.post('/edit/:sv', upload.single('avatar'), controller.postEdit);
 
 router.get('/addOne', controller.addIndex);
 
+router.get('/addJson', controller.addIndexJson);
+
 router.post('/addOne', upload.single('avatar'), addStudentMiddleware.postAddStudent, controller.postAddOne);
+
+router.post('/addJson', upload.single('data'), controller.postAddJson);
 
 router.get('/err', function(req, res, next) {
     try {
