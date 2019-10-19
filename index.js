@@ -3,10 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const multer = require('multer');
-const sql = require('mssql');
 
-const pool = require('./connectDB');
 const sinhvienRoute = require('./routers/sinhvien.route');
 const authRoute = require('./routers/auth.route');
 

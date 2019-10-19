@@ -24,9 +24,13 @@ router.get('/addOne', controller.addIndex);
 
 router.get('/addJson', controller.addIndexJson);
 
+router.get('/addXlsx', controller.addIndexXlsx);
+
 router.post('/addOne', upload.single('avatar'), addStudentMiddleware.postAddStudent, controller.postAddOne);
 
 router.post('/addJson', upload.single('data'), controller.postAddJson);
+
+router.post('/addXlsx', upload.single('data'), controller.postAddXlsx);
 
 router.get('/err', function(req, res, next) {
     try {
